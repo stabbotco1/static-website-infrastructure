@@ -30,7 +30,7 @@ jobs:
           fi
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.3
 
       - name: Debug OIDC Configuration
         run: |
@@ -42,7 +42,7 @@ jobs:
           echo "GitHub token URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
           
       - name: Configure AWS credentials via OIDC
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.2.0
         with:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/gharole-website-infrastructure-prd
           aws-region: ${{ env.AWS_REGION }}
@@ -102,7 +102,7 @@ jobs:
           fi
 
       - name: Upload outputs artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: infrastructure-outputs
           path: infrastructure-outputs.json
