@@ -76,7 +76,7 @@ For detailed prerequisites, see [prerequisites guide](https://github.com/stephen
 
 ### GitHub Actions Workflows
 
-- **Deploy Infrastructure** - OIDC-authenticated deployment triggered manually or on push
+- **Deploy Infrastructure** - OIDC-authenticated deployment triggered manually via workflow dispatch
 - **Destroy Infrastructure** - OIDC-authenticated destruction with confirmation requirement
 
 Current deployed domains: denverbites.com, denverbytes.com, bittikens.com

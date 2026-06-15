@@ -22,15 +22,15 @@ The infrastructure project publishes resource identifiers to SSM Parameter Store
 ### Repository Naming Convention
 
 Content projects follow the naming pattern:
-- Repository: `website_{domain-with-underscores}_com`
-- Example: `website_denverbytes_com` → `denverbytes.com`
+- Repository: `website-{domain}-com`
+- Example: `website-denverbytes-com` → `denverbytes.com`
 
 ## Content Project Structure
 
 A typical content project includes:
 
 ```
-website_example_com/
+website-example-com/
 ├── src/                    # Source content
 ├── dist/                   # Built static files
 ├── scripts/
@@ -57,7 +57,7 @@ Deployment script extracts domain from repository name and retrieves infrastruct
 ```bash
 # Extract domain from git repository
 PROJECT_NAME=$(git remote get-url origin | sed -E 's|.*github\.com[:/][^/]+/([^/.]+)(\.git)?$|\1|')
-DOMAIN_STUB=$(echo "$PROJECT_NAME" | sed 's/^website_//' | sed 's/_com$//')
+DOMAIN_STUB=$(echo "$PROJECT_NAME" | sed 's/^website-//' | sed 's/-com$//')
 DOMAIN_NAME="${DOMAIN_STUB}.com"
 
 # Get infrastructure parameters
@@ -81,10 +81,10 @@ aws cloudfront create-invalidation --distribution-id ${DISTRIBUTION_ID} --paths 
 
 ## Reference Implementation
 
-See [website_denverbytes_com](https://github.com/stephenabbot/website_denverbytes_com) for a complete reference implementation using:
+See [website-denverbytes-com](https://github.com/stephenabbot/website-denverbytes-com) for a complete reference implementation using:
 - Astro static site generator
 - TypeScript for type safety
-- GitHub Actions for automated deployment
+- GitHub Actions for manually triggered deployment
 - Proper error handling and rollback capabilities
 
 ## Security Integration
@@ -96,13 +96,12 @@ Content projects use the same deployment role pattern:
 
 ## GitHub Actions Integration
 
-Example workflow for automated content deployment:
+Example workflow for manually triggered deployment:
 
 ```yaml
 name: Deploy Website
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -112,10 +111,10 @@ jobs:
       contents: read
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.3
       
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.2.0
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/gharole-website-example-com-prd
           aws-region: us-east-1
