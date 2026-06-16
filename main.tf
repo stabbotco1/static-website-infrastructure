@@ -20,6 +20,7 @@ provider "aws" {
 # Get current caller identity and region
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
+data "aws_iam_account_alias" "current" {}
 
 # Get git remote URL for project identification
 data "external" "git_info" {
@@ -69,10 +70,9 @@ module "standard_tags" {
   project       = local.git_project_name
   repository    = local.git_repository
   environment   = each.value.environment
-  owner         = "StephenAbbot"
   deployed_by   = data.aws_caller_identity.current.arn
   managed_by    = "OpenTofu"
-  deployment_id = "Default"
+  account_alias = data.aws_iam_account_alias.current.account_alias
 }
 
 # Deploy domain infrastructure for each domain/environment
